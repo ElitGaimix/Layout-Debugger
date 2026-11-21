@@ -1,0 +1,18 @@
+name: LayoutDebugger
+version: 0.1.0-dev
+main: fr.eligaimix.ltdr.paper.LayoutDebuggerPaper
+api-version: '26.2'
+description: Optional client bridge and server-authoritative layout documents.
+commands:
+  ld:
+    description: Layout Debugger
+permissions:
+  layoutdebugger.use:
+    description: Use Layout Debugger in creative mode
+    default: op
+  layoutdebugger.admin.view:
+    description: Inspect and export other players animations, read only
+    default: op
+  layoutdebugger.admin.assign:
+    description: Assign legacy animations without a creator
+    default: op

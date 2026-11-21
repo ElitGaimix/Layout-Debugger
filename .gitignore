@@ -1,0 +1,74 @@
+# Gradle caches and generated output (all subprojects)
+.gradle/
+build/
+out/
+classes/
+*.class
+
+# Editors and local workspace settings
+.idea/
+.vscode/
+.settings/
+*.iml
+*.ipr
+*.iws
+*.launch
+*.code-workspace
+.classpath
+.project
+.factorypath
+bin/
+*.swp
+*.swo
+*~
+
+# Local Minecraft instances, test servers and private game data
+run/
+runClient/
+runServer/
+serveur-test-paper/
+world/
+world_nether/
+world_the_end/
+saves/
+logs/
+crash-reports/
+screenshots/
+backups/
+exports/
+inventory-backups/
+/server.properties
+/eula.txt
+/ops.json
+/whitelist.json
+/usercache.json
+/banned-players.json
+/banned-ips.json
+
+# Personal configuration and credentials
+.local/
+.env
+.env.*
+!.env.example
+local.properties
+gradle-local.properties
+*.jks
+*.keystore
+*.pem
+*.key
+
+# Python tooling
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Logs, crash dumps and operating system files
+*.log
+hs_err_*.log
+replay_*.log
+*.hprof
+*.jfr
+.DS_Store
+Thumbs.db
+Desktop.ini

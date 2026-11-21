@@ -1,0 +1,24 @@
+{
+  "required": true,
+  "package": "fr.eligaimix.ltdr.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "PistonBaseBlockAccessor",
+    "PistonBaseBlockMixin",
+    "ServerLevelAccessor",
+    "LevelTicksAccessor",
+    "LevelChunkTicksAccessor",
+    "ServerTickRateManagerMixin",
+    "PlayerListSaveAccessor",
+    "ConstructionPacketMixin",
+    "ConstructionBlockMixin",
+    "ReplayPacketsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "ScaledGuiGraphicsMixin",
+    "ReplayChunkMixin"
+  ]
+}

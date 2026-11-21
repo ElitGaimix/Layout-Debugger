@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '9.6.1'
+}
+repositories { mavenCentral() }
+sourceSets { bridge }
+dependencies {
+    implementation 'org.ow2.asm:asm:9.10.1'
+    implementation 'org.ow2.asm:asm-tree:9.10.1'
+    compileOnly sourceSets.bridge.output
+    testImplementation sourceSets.bridge.output
+    testImplementation 'org.ow2.asm:asm-analysis:9.10.1'
+}
+tasks.withType(JavaCompile).configureEach { options.release=25; options.encoding='UTF-8' }
+tasks.register('bridgeJar',Jar) {
+    archiveBaseName='layout-debugger-bridge'
+    from sourceSets.bridge.output
+}
+tasks.named('jar') { enabled=false }
+tasks.named('shadowJar') {
+    dependsOn bridgeJar
+    archiveBaseName='layout-debugger-agent'
+    archiveClassifier=''
+    // Keep the startup component's ASM private, away from Paper and other agents.
+    relocate 'org.objectweb.asm','fr.eligaimix.ltdr.agent.internal.asm'
+    from(tasks.named('bridgeJar')) { rename { 'layout-debugger-bridge.jar' } }
+    from('../../LICENSE')
+    from('THIRD-PARTY-ASM-LICENSE.txt')
+    manifest { attributes('Premain-Class':'fr.eligaimix.ltdr.agent.LayoutAgent','Can-Redefine-Classes':'false','Can-Retransform-Classes':'false') }
+}
+tasks.named('assemble') { dependsOn shadowJar }
+tasks.register('hookTest',JavaExec) {
+    dependsOn testClasses
+    onlyIf { providers.gradleProperty('nativeJar').isPresent() }
+    classpath=sourceSets.test.runtimeClasspath
+    mainClass='fr.eligaimix.ltdr.agent.HookChecks'
+    args providers.gradleProperty('nativeJar').getOrElse(file('../.gradle/caches/paperweight/taskCache/mappedServerJar.jar').absolutePath)
+}
+tasks.named('check') { dependsOn hookTest }
+tasks.named('test') { failOnNoDiscoveredTests=false }

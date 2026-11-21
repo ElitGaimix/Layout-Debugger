@@ -1,0 +1,5 @@
+name: LayoutDebuggerNativeChecks
+version: '1'
+main: fr.eligaimix.ltdr.paper.PaperNativeChecks
+api-version: '26.2'
+depend: [LayoutDebugger]

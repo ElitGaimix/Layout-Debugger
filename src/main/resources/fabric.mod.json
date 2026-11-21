@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"id": "layout-debugger",
+	"version": "${version}",
+	"name": "Layout Debugger",
+	"description": "Éditeur de timelines de pistons en ticks redstone, avec outils en jeu et prévisualisation vanilla côté serveur.",
+	"authors": [
+		"ElitGaimix"
+	],
+	"license": "CC0-1.0",
+	"icon": "assets/layout-debugger/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"fr.eligaimix.ltdr.LayoutDebugger"
+		],
+		"client": [
+			"fr.eligaimix.ltdr.client.LayoutDebuggerClient"
+		]
+	},
+	"mixins": ["layout-debugger.mixins.json"],
+	"depends": {
+		"fabricloader": ">=0.20.1",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

@@ -1,0 +1,75 @@
+plugins {
+	id 'java'
+	id 'io.papermc.paperweight.userdev' version '2.0.0-beta.24'
+}
+
+group = 'fr.eligaimix.ltdr'
+version = '0.1.0-dev'
+
+repositories {
+	mavenCentral()
+	maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+}
+
+dependencies {
+	paperweight.paperDevBundle('26.2.build.135-stable')
+	compileOnly files('agent/build/libs/layout-debugger-bridge.jar')
+}
+
+// Compile the same immutable documents and storage implementation on both platforms.
+sourceSets.main.java {
+	srcDir 'build/shared-sources'
+	include 'fr/eligaimix/ltdr/**'
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.release = 25
+	options.encoding = 'UTF-8'
+}
+
+tasks.register('dependencyClasspath') {
+	doLast {
+		file('build/dependency-classpath.txt').parentFile.mkdirs()
+		file('build/dependency-classpath.txt').text = sourceSets.main.compileClasspath.asPath
+	}
+}
+
+jar {
+	archiveBaseName = 'layout-debugger-paper'
+	from('../LICENSE')
+}
+
+// Platform adapters use the same class names; the engine itself is copied verbatim, never forked.
+def sharedEngine = tasks.register('sharedEngine',Sync) {
+    from('../src/main/java')
+    into('build/shared-sources')
+    include 'fr/eligaimix/ltdr/sequence/**','fr/eligaimix/ltdr/storage/**','fr/eligaimix/ltdr/playback/**','fr/eligaimix/ltdr/preview/**','fr/eligaimix/ltdr/piston/**','fr/eligaimix/ltdr/platform/**','fr/eligaimix/ltdr/i18n/**'
+    include 'fr/eligaimix/ltdr/network/EditorRequest.java','fr/eligaimix/ltdr/network/EditorState.java','fr/eligaimix/ltdr/network/BridgeProtocol.java','fr/eligaimix/ltdr/network/ExportChunk.java'
+    exclude 'fr/eligaimix/ltdr/playback/EditorTools.java'
+}
+tasks.named('compileJava') { dependsOn sharedEngine,gradle.includedBuild('layout-debugger-agent').task(':shadowJar') }
+
+sourceSets {
+    integrationTest {
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += output + compileClasspath
+    }
+}
+tasks.register('integrationTestJar',Jar) {
+    dependsOn integrationTestClasses
+    archiveBaseName='layout-debugger-paper-integration-tests'
+    destinationDirectory=layout.buildDirectory.dir('integration-tests')
+    from sourceSets.integrationTest.output
+}
+
+configurations { startupVerification }
+dependencies { startupVerification 'org.ow2.asm:asm-analysis:9.10.1' }
+tasks.register('verifyStartupHooks',JavaExec) {
+    dependsOn tasks.named('paperweightUserdevSetup'),gradle.includedBuild('layout-debugger-agent').task(':shadowJar'),gradle.includedBuild('layout-debugger-agent').task(':compileTestJava')
+    classpath=files('agent/build/classes/java/test','agent/build/classes/java/bridge','agent/build/libs/layout-debugger-agent.jar')+configurations.startupVerification
+    mainClass='fr.eligaimix.ltdr.agent.HookChecks'
+    args file('.gradle/caches/paperweight/taskCache/mappedServerJar.jar').absolutePath
+}
+tasks.named('check') { dependsOn verifyStartupHooks }
+
+sourceSets.main.resources { srcDir '../src/main/resources'; include 'plugin.yml','assets/layout-debugger/lang/*.json' }

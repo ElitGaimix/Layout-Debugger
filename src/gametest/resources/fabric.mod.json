@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "layout-debugger-gametest",
+  "version": "1.0.0",
+  "name": "Layout Debugger integration checks",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-gametest": ["fr.eligaimix.ltdr.gametest.LayoutGameTests"],
+    "fabric-client-gametest": [
+      "fr.eligaimix.ltdr.gametest.TimelineClientGameTest",
+      "fr.eligaimix.ltdr.gametest.EditorWorkflowClientGameTest",
+      "fr.eligaimix.ltdr.gametest.PaperBridgeClientGameTest"
+    ]
+  },
+  "depends": {
+    "layout-debugger": "*",
+    "fabric-gametest-api-v1": "*"
+  }
+}
