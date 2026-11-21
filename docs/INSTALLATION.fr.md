@@ -1,8 +1,8 @@
 # Installation — Layout Debugger 26.2
 
 Cette distribution est une **version de développement / alpha**, pas une garantie
-pour tous les layouts techniques. Les numéros des JAR sont conservés : mod 1.0.0,
-plugin 0.1.0-dev. Le pont réseau est en version **3** : mettre à jour le mod client,
+pour tous les layouts techniques. Les numéros des JAR sont conservés : mod 1.0.1,
+plugin 0.1.1. Le pont réseau est en version **3** : mettre à jour le mod client,
 le plugin et l'agent ensemble, même si leurs noms de fichiers sont inchangés.
 
 | Usage | Dossier à utiliser | Installation |

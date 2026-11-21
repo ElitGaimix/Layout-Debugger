@@ -1,107 +1,74 @@
-# Animations privées et échanges
+# Animation ownership, export and import
 
-Chaque document possède le UUID Minecraft de son créateur. Les menus, suggestions,
-commandes ordinaires, captures et lectures utilisent uniquement le catalogue de ce
-UUID. Deux joueurs peuvent utiliser le même nom. Les changements de pseudo ne
-changent pas le propriétaire. Une permission d'administration ne transforme pas
-le catalogue personnel en catalogue global.
+[Français](OWNERSHIP-EXPORT.fr.md) · [Usage](USAGE.md)
 
-Cette confidentialité concerne les documents. Les constructions restent dans le
-monde partagé : ce système ne remplace pas un plugin de claims et n'empêche pas
-un joueur d'observer une porte ou de modifier ses blocs hors d'une capture.
-Une seule capture/lecture réservée reste disponible à la fois.
+Each animation belongs to its creator’s Minecraft UUID. Menus, suggestions, ordinary commands, captures and playback use that UUID’s catalog. Two players can use the same animation name. Changing your username does not change ownership. Administrative access does not turn your personal catalog into a global catalog.
 
-## Exporter
+This protects documents, not world blocks. It is not a land-claim system: players can still observe a layout or modify its blocks outside a capture. Only one reserved capture/viewing session can run at a time.
 
-Dans **K → Animations**, sélectionner une animation, terminer sa capture/lecture
-si nécessaire, puis **Exporter**. Le fichier `.ldanim.json` est téléchargé dans
-`<dossier du jeu>/layout-debugger/exports/`. Le chat indique le chemin.
-Une copie reste aussi dans le dossier de données serveur `exports/<UUID>/`.
-Seul un transfert explicitement demandé est accepté par le client ; aucun fichier
-existant n'est remplacé. Limite : 4 Mio et un export par joueur toutes les 10 secondes.
+## Export
 
-Sans interface : `/ld export MaPorte` écrit uniquement la copie côté serveur.
-`/ld whoami` indique son UUID. Ne partager que le fichier `.ldanim.json` voulu,
-pas `sequences.json`, qui contient les documents de tous les créateurs.
+In **K → Animations**, select an animation, finish any active session, then export it. The `.ldanim.json` file is saved to `<game directory>/layout-debugger/exports/`; chat shows the path. A server-side copy is also stored under `exports/<UUID>/` in the data folder.
 
-**Contenu : données uniquement**, pas une schematic et pas les blocs du monde.
-Le fichier contient les deux timelines, l'ordre des actions, les références et
-orientations des pistons et les préférences d'avertissement. Les coordonnées
-sont relatives au premier piston enregistré. L'UUID du créateur d'origine est
-retiré ; un import ne peut pas donner les droits d'un autre joueur.
-Les snapshots, NBT de coffres, inventaires, entités et sauvegardes de récupération
-ne sont pas exportés. Il faut transférer la construction séparément si nécessaire.
+The client accepts only explicitly requested transfers and never overwrites an existing file. Exports are limited to 4 MiB and one export per player every 10 seconds.
 
-## Importer
+`/ld export Door` writes only the server-side copy. `/ld whoami` prints your UUID. Share the selected `.ldanim.json` file, not `sequences.json`, which contains every creator’s documents.
 
-Le gestionnaire du serveur dépose le fichier dans le dossier de données
-`imports/<UUID du destinataire>/`. Cela évite de permettre à un client d'envoyer
-arbitrairement des documents sur le serveur. Créer les dossiers si nécessaire.
-En solo, ces dossiers sont dans la sauvegarde du monde.
+**Exports contain animation data, not layout blocks or a schematic.** They include both timelines, action order, piston references and orientations, and warning preferences. Positions are relative to the first registered piston. The original creator UUID is removed; importing cannot grant access to someone else’s catalog.
 
-Se placer **dans le bloc où doit être la base du premier piston**, dans la bonne
-dimension, puis exécuter par exemple :
+Snapshots, chest NBT, inventories, entities and recovery backups are not exported. Transfer the actual layout separately when needed.
+
+## Import
+
+The server operator places the file under `imports/<recipient UUID>/` in the data folder, creating the directories if needed. Clients cannot upload arbitrary documents through the editor. In single-player, these folders are inside the world save.
+
+Stand **in the block intended for the base of the first piston**, in the correct dimension, then run:
 
 ```text
 /ld whoami
-/ld import MaPorte-a1b2c3d4.ldanim.json MaCopie
+/ld import Door-a1b2c3d4.ldanim.json MyCopy
 ```
 
-Le nom doit être libre dans son propre catalogue (1 à 48 caractères : lettres,
-chiffres, `_`, `-`). L'import crée un nouveau document attribué à l'exécutant,
-avec les positions décalées vers l'ancre actuelle. Il ne place aucun bloc et
-ne tourne pas la construction : les orientations sont conservées. La lecture
-vérifie les vrais pistons à ces positions. Le format est ciblé Minecraft 26.2.
+Use the real filename. The new name must be unused in your catalog and contain 1–48 ASCII letters, digits, `_` or `-`.
 
-Dossiers de données :
+Import creates a new document owned by the importing player and offsets positions to the current anchor. It does not place blocks or rotate the layout; orientations are preserved. Playback checks the real pistons at those positions. The format targets Minecraft 26.2.
 
-- Fabric/solo : `<monde>/data/layout-debugger/`.
-- Paper : `plugins/LayoutDebugger/`.
+Data folders:
+
+- **Fabric / single-player:** `<world>/data/layout-debugger/`.
+- **Paper:** `plugins/LayoutDebugger/`.
 
 ## Administration
 
-Paper : `layoutdebugger.admin.view` permet de consulter/exporter, en lecture seule.
-`layoutdebugger.admin.assign` permet seulement d'attribuer les anciennes animations.
-Les deux permissions sont distinctes de `layoutdebugger.use` ; OP les reçoit par
-défaut, mais un gestionnaire peut les accorder/refuser individuellement.
-Fabric : nœuds `layout-debugger:admin/view` et `layout-debugger:admin/assign`
-via l'API de permissions Fabric, niveau administrateur comme valeur de repli.
-Les commandes d'inspection et d'attribution sont aussi accessibles à la console.
-L'export administrateur demande un joueur pour déterminer son dossier UUID.
+Paper permissions:
+
+- `layoutdebugger.admin.view`: read-only inspection and export.
+- `layoutdebugger.admin.assign`: assignment of legacy animations.
+
+Both are separate from `layoutdebugger.use`; OP receives them by default. A permissions manager can grant or deny each separately.
+
+Fabric uses `layout-debugger:admin/view` and `layout-debugger:admin/assign` through the Fabric permissions API, with administrator-level fallback. Inspection and assignment commands also work from the server console. Administrative export needs a player to select the destination UUID folder.
 
 ```text
 /ld admin owners
 /ld admin list <UUID> [page]
-/ld admin show <UUID> MaPorte [page]
-/ld admin export <UUID> MaPorte
+/ld admin show <UUID> Door [page]
+/ld admin export <UUID> Door
 /ld admin list legacy
-/ld admin show legacy AnciennePorte
-/ld admin assign AnciennePorte <UUID-du-createur>
+/ld admin show legacy OldDoor
+/ld admin assign OldDoor <creator-UUID>
 ```
 
-Remplacer les éléments entre chevrons, sans taper les chevrons. `owners`, `list`
-et `show` sont paginés (20 lignes). `owners [page]` liste les UUID connus et
-éventuellement `legacy`. `show` affiche les coordonnées et les actions des deux
-timelines sans agir dans le monde. `admin export` écrit côté serveur, dans le
-dossier de l'administrateur ; il ne télécharge rien automatiquement.
-Aucune commande d'administration n'autorise à éditer ou lancer le document d'un
-autre créateur dans le monde. Pour cela, exporter puis importer une copie personnelle.
+Replace angle-bracket placeholders without typing the brackets. `owners`, `list` and `show` use pages of 20 rows. `owners [page]` lists known UUIDs and optionally `legacy`. `show` displays coordinates and actions from both timelines without changing the world. Administrative export writes into the administrator’s server-side folder; it does not download automatically.
 
-## Mise à jour des anciennes données
+Admin commands do not allow editing or running another creator’s animation in the world. Export and import a personal copy for that purpose.
 
-Le schéma de stockage passe à **4**. Les versions 1 à 3 restent lisibles.
-Comme elles ne mémorisaient pas le créateur, les attribuer automatiquement au
-premier joueur connecté volerait potentiellement les animations des autres.
-Elles restent donc conservées mais invisibles dans les catalogues personnels
-jusqu'à une attribution explicite avec `admin assign`.
+## Migrating older data
 
-Avant la première écriture au nouveau format, le fichier initial est copié en
-`sequences.json.before-ownership-v4.bak`, sans écraser une sauvegarde existante.
-Faire aussi une sauvegarde complète du monde et des données avant installation.
-Pour son ancien serveur de test : récupérer son UUID avec `/ld whoami`, lister
-`/ld admin list legacy`, puis attribuer chaque ancienne animation. Depuis la
-console, omettre `/` en début de commande. Ne pas réinstaller une ancienne
-version sur le fichier v4 ; restaurer sa sauvegarde pour revenir en arrière.
-Un passage online/offline ou un proxy changeant les UUID nécessite une migration
-administrée ; cette version ne propose pas de transfert entre deux propriétaires
-ayant déjà un UUID.
+Storage schema **4** can read versions 1–3. Older documents did not record their creator, so they remain preserved but hidden from personal catalogs until explicitly assigned. They are not automatically given to the first player who joins.
+
+Before the first schema-4 write, the original file is copied to `sequences.json.before-ownership-v4.bak` without replacing an existing backup. Also make a full world/data backup before installation.
+
+Run `/ld whoami`, inspect `/ld admin list legacy`, then assign each animation with `/ld admin assign`. Omit the leading `/` in the console. An existing name in the recipient’s catalog is rejected.
+
+Do not downgrade over a schema-4 file; restore your backup instead. Switching online/offline mode or using a proxy that changes UUIDs requires an operator-managed migration. This version does not provide transfers between existing owners with different UUIDs.

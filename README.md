@@ -4,7 +4,7 @@
 
 Layout Debugger is a creative-mode Minecraft mod for building and debugging piston layouts. Capture a layout, edit its opening and closing timelines, and inspect the result directly in your world using Minecraft’s physics.
 
-[Français](README.fr.md) · [Installation guide](docs/INSTALLATION.md) · [Full manual (French)](docs/USAGE.md) · [Paper backend (French)](paper/README.md)
+[Français](README.fr.md) · [Installation guide](docs/INSTALLATION.md) · [Full manual](docs/USAGE.md) · [Paper backend](paper/README.md)
 
 ## Features
 
@@ -26,7 +26,7 @@ Layout Debugger is a creative-mode Minecraft mod for building and debugging pist
 | Fabric API | Project uses 0.161.0+26.2 |
 | Optional Paper backend | 26.2 build 135 only |
 
-The Fabric mod is version **1.0.0**; the Paper plugin is **0.1.0-dev**. The current distribution is an **alpha**. See the [verification report (French)](paper/VERIFICATION.md) for previous checks and known limitations.
+The Fabric mod is version **1.0.1**; the Paper plugin is **0.1.1**. The current distribution is an **alpha**. See the [verification report](paper/VERIFICATION.md) for previous checks and known limitations.
 
 ## Installation
 
@@ -34,7 +34,7 @@ Download the client or server files from [Releases](https://github.com/ElitGaimi
 
 ### Client / single-player
 
-Install Fabric Loader and Fabric API for Minecraft 26.2, then put `layout-debugger-1.0.0.jar` in your instance’s `mods/` folder. Enable world commands for default access in single-player.
+Install Fabric Loader and Fabric API for Minecraft 26.2, then put `layout-debugger-1.0.1.jar` in your instance’s `mods/` folder. Enable world commands for default access in single-player.
 
 ### Fabric server
 
@@ -73,7 +73,7 @@ After building, create local distribution archives with:
 python tools/package-release.py
 ```
 
-The `out/` distribution folder, test worlds, caches and personal settings are excluded from Git. See the [build guide (French)](docs/BUILD.md) for optional in-game tests.
+The `out/` distribution folder, test worlds, caches and personal settings are excluded from Git. See the [build guide](docs/BUILD.md) for optional in-game tests.
 
 ## Reporting issues
 
@@ -81,4 +81,6 @@ Include Minecraft, mod and server versions, reproduction steps, and other instal
 
 ## License
 
-By **ElitGaimix**, licensed under [CC0-1.0](LICENSE). The Paper startup component includes ASM under its [third-party license](paper/agent/THIRD-PARTY-ASM-LICENSE.txt).
+By **ElitGaimix**, licensed under [MIT](LICENSE). The Paper startup component includes ASM under its [third-party license](paper/agent/THIRD-PARTY-ASM-LICENSE.txt).
+
+See [licensing history](LICENSING.md) for the earlier CC0 release and third-party notices.

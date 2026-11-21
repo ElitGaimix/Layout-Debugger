@@ -2,6 +2,7 @@
 .gradle/
 build/
 out/
+/modrinth/files/
 classes/
 *.class
 

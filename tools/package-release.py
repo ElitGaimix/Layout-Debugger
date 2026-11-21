@@ -33,12 +33,19 @@ def main():
     write("serveur-paper/start-paper-example.sh",b'#!/bin/sh\nset -eu\ncd "$(dirname "$0")"\nexec java -javaagent:layout-debugger-agent.jar -Xms1G -Xmx2G -jar paper-26.2-135.jar --nogui\n')
     for p in (ROOT/"docs").glob("*.md"):copy(p.relative_to(ROOT),"documentation/"+p.name)
     copy("paper/VERIFICATION.md","documentation/VERIFICATION.md")
+    copy("paper/VERIFICATION.fr.md","documentation/VERIFICATION.fr.md")
     copy("docs/USAGE.md","documentation/GUIDE-FABRIC.md")
     copy("paper/README.md","documentation/GUIDE-PAPER.md")
+    copy("paper/README.fr.md","documentation/GUIDE-PAPER.fr.md")
     # Normalize links for the flattened documentation folder.
     for p in (OUT/"documentation").glob("*.md"):
-        p.write_text(p.read_text(encoding="utf-8").replace("../paper/README.md","GUIDE-PAPER.md").replace("../paper/VERIFICATION.md","VERIFICATION.md").replace("../docs/","").replace("docs/","").replace("paper/README.md","GUIDE-PAPER.md").replace("paper/VERIFICATION.md","VERIFICATION.md"),encoding="utf-8")
+        content = p.read_text(encoding="utf-8").replace("../paper/README.fr.md","GUIDE-PAPER.fr.md").replace("../paper/VERIFICATION.fr.md","VERIFICATION.fr.md").replace("../paper/README.md","GUIDE-PAPER.md").replace("../paper/VERIFICATION.md","VERIFICATION.md").replace("../docs/","").replace("docs/","").replace("paper/README.md","GUIDE-PAPER.md").replace("paper/VERIFICATION.md","VERIFICATION.md")
+        if p.name in {"GUIDE-PAPER.md", "GUIDE-PAPER.fr.md", "VERIFICATION.md"}:
+            content = content.replace("(README.fr.md)", "(GUIDE-PAPER.fr.md)").replace("(README.md)", "(GUIDE-PAPER.md)")
+        p.write_text(content,encoding="utf-8")
     copy("LICENSE","LICENSE")
+    write("LICENSING.md", (ROOT/"LICENSING.md").read_text(encoding="utf-8").replace("paper/agent/THIRD-PARTY-ASM-LICENSE.txt", "THIRD-PARTY-ASM-LICENSE.txt").encode("utf-8"))
+    copy("licenses/CC0-1.0-previous-releases.txt","licenses/CC0-1.0-previous-releases.txt")
     copy("paper/agent/THIRD-PARTY-ASM-LICENSE.txt","THIRD-PARTY-ASM-LICENSE.txt")
     write("README-FIRST.md",("# Layout Debugger — Minecraft 26.2\n\n"
         "Start with the [installation guide](documentation/INSTALLATION.md): client first, then server.\n\n"
@@ -62,19 +69,19 @@ def main():
         "Minecraft, Paper, Fabric Loader et Fabric API ne sont pas inclus. Mettre à jour "
         "client, plugin et agent ensemble (protocole 3). Les anciens documents sans créateur "
         "doivent être attribués via `ld admin assign`. Aucune publication en ligne effectuée.\n").encode("utf-8"))
-    metadata={"minecraft":"26.2","javaMinimum":25,"testedJava":27,"fabricLoader":"0.20.1","fabricApi":"0.161.0+26.2","paperBuild":135,"paperCommit":"e4d6dfd","modVersion":mod_version,"pluginVersion":plugin_version,"protocolVersion":3,"storageSchema":4,"exportFormatVersion":1,"includesWorldBlocks":False,"status":"alpha","builtForPublicationOn":"2026-11-21"}
+    metadata={"minecraft":"26.2","javaMinimum":25,"testedJava":27,"fabricLoader":"0.20.1","fabricApi":"0.161.0+26.2","paperBuild":135,"paperCommit":"e4d6dfd","modVersion":mod_version,"pluginVersion":plugin_version,"protocolVersion":3,"storageSchema":4,"exportFormatVersion":1,"includesWorldBlocks":False,"license":"MIT","status":"alpha","builtForPublicationOn":"2026-11-21"}
     write("manifest.json",(json.dumps(metadata,ensure_ascii=False,indent=2)+"\n").encode("utf-8"))
     # Explicit allowlist: no accidental inclusion of .gradle/, run/, worlds, exports or logs.
-    source_roots=["src","paper/src","paper/agent/src","gradle/wrapper","docs",".github"]
+    source_roots=["src","paper/src","paper/agent/src","gradle/wrapper","docs",".github","modrinth"]
     source_files=["tools/package-release.py","tools/package-paper.py","tools/verify-paper-vanilla.py","tools/bootstrap-paper.ps1","tools/paper-bootstrap/build.gradle","tools/paper-bootstrap/settings.gradle","build.gradle","settings.gradle","gradle.properties","gradlew","gradlew.bat","LICENSE","README.md","paper/build.gradle","paper/settings.gradle","paper/README.md","paper/VERIFICATION.md","paper/agent/build.gradle","paper/agent/settings.gradle","paper/agent/THIRD-PARTY-ASM-LICENSE.txt"]
-    source_files += ["README.fr.md", ".gitignore", ".gitattributes"]
+    source_files += ["LICENSING.md", "licenses/CC0-1.0-previous-releases.txt", "README.fr.md", "paper/README.fr.md", "paper/VERIFICATION.fr.md", ".gitignore", ".gitattributes"]
     source_paths=[ROOT/p for p in source_files if (ROOT/p).is_file()]
     for root in source_roots:
-        source_paths.extend(p for p in (ROOT/root).rglob("*") if p.is_file() and "__pycache__" not in p.parts and p.suffix!=".pyc")
+        source_paths.extend(p for p in (ROOT/root).rglob("*") if p.is_file() and "__pycache__" not in p.parts and p.suffix!=".pyc" and p.relative_to(ROOT).parts[:2] != ("modrinth", "files"))
     source_zip=OUT/"sources/layout-debugger-sources.zip";source_zip.parent.mkdir(exist_ok=True)
     with zipfile.ZipFile(source_zip,"w",zipfile.ZIP_DEFLATED) as z:
         for p in sorted(set(source_paths)):z.write(p,p.relative_to(ROOT).as_posix())
-    common=[p for folder in ["documentation"] for p in (OUT/folder).rglob("*") if p.is_file()]+[OUT/n for n in ["LICENSE","THIRD-PARTY-ASM-LICENSE.txt","README-FIRST.md","LIRE-EN-PREMIER.md","manifest.json"]]
+    common=[p for folder in ["documentation"] for p in (OUT/folder).rglob("*") if p.is_file()]+[OUT/n for n in ["LICENSE","THIRD-PARTY-ASM-LICENSE.txt","README-FIRST.md","LIRE-EN-PREMIER.md","LICENSING.md","licenses/CC0-1.0-previous-releases.txt","manifest.json"]]
     for kind in ["client","serveur-fabric","serveur-paper"]:archive(f"layout-debugger-26.2-{kind}.zip",common+list((OUT/kind).rglob("*")))
     archive("layout-debugger-26.2-complet.zip",common+[p for kind in ["client","serveur-fabric","serveur-paper","sources"] for p in (OUT/kind).rglob("*")])
     paths=sorted(p for p in OUT.rglob("*") if p.is_file() and p.name!="SHA256SUMS.txt")

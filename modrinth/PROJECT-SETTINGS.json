@@ -1,0 +1,44 @@
+{
+  "name": "Layout Debugger",
+  "suggested_slug": "layout-debugger",
+  "summary": "Program and debug redstone layouts with opening/closing timelines, tick-by-tick playback, and in-game piston controls.",
+  "project_type": "mod",
+  "categories_suggested": [
+    "utility",
+    "game-mechanics"
+  ],
+  "client_side": "required",
+  "server_side": "required",
+  "source_url": "https://github.com/ElitGaimix/Layout-Debugger",
+  "issues_url": "https://github.com/ElitGaimix/Layout-Debugger/issues",
+  "wiki_url": "https://github.com/ElitGaimix/Layout-Debugger/blob/v1.26.2-mit/docs/INSTALLATION.md",
+  "icon": "assets/icon.png",
+  "description_file": "DESCRIPTION.md",
+  "version": {
+    "name": "Layout Debugger v1 — Minecraft 26.2 (MIT revision)",
+    "version_number": "1.0.1+mc26.2",
+    "version_type": "alpha",
+    "game_versions": [
+      "26.2"
+    ],
+    "loaders": [
+      "fabric"
+    ],
+    "primary_file": "files/layout-debugger-1.0.1.jar",
+    "changelog_file": "CHANGELOG.md",
+    "dependencies": [
+      {
+        "project_slug": "fabric-api",
+        "dependency_type": "required"
+      }
+    ]
+  },
+  "notes": [
+    "Preparation worksheet, not a Modrinth API request payload.",
+    "The Fabric version requires the mod on client and server for multiplayer editing. Single-player includes the logical server.",
+    "Only publish game versions and categories actually offered by Modrinth; do not substitute another Minecraft version.",
+    "Keep Paper files on GitHub for this Fabric version. A Paper version would need its own loader metadata and installation instructions."
+  ],
+  "license": "MIT",
+  "license_url": "https://github.com/ElitGaimix/Layout-Debugger/blob/v1.26.2-mit/LICENSE"
+}

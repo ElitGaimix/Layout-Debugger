@@ -4,7 +4,7 @@
 
 Layout Debugger est un mod Minecraft pour construire des animations de pistons en créatif. Capturez un layout, programmez ses séquences d’ouverture et de fermeture, puis parcourez leur résultat directement dans le monde avec la physique de Minecraft.
 
-[English](README.md) · [Installation](docs/INSTALLATION.md) · [Guide complet](docs/USAGE.md) · [Serveur Paper](paper/README.md)
+[English](README.md) · [Installation](docs/INSTALLATION.fr.md) · [Guide complet](docs/USAGE.fr.md) · [Serveur Paper](paper/README.fr.md)
 
 ## Fonctionnalités
 
@@ -26,17 +26,17 @@ Layout Debugger est un mod Minecraft pour construire des animations de pistons e
 | Fabric API | 0.161.0+26.2 utilisée par le projet |
 | Paper, en option | 26.2 build 135 uniquement |
 
-Le mod Fabric porte le numéro **1.0.0** et le plugin Paper **0.1.0-dev**. La distribution actuelle reste une **alpha** ; les limites et essais précédents sont décrits dans le [rapport de vérification](paper/VERIFICATION.md).
+Le mod Fabric porte le numéro **1.0.1** et le plugin Paper **0.1.1**. La distribution actuelle reste une **alpha** ; les limites et essais précédents sont décrits dans le [rapport de vérification](paper/VERIFICATION.md).
 
 ## Installation
 
-**Solo ou client :** installez Fabric Loader et Fabric API pour Minecraft 26.2, puis placez `layout-debugger-1.0.0.jar` dans `mods/`.
+**Solo ou client :** installez Fabric Loader et Fabric API pour Minecraft 26.2, puis placez `layout-debugger-1.0.1.jar` dans `mods/`.
 
 **Serveur Fabric :** installez également le mod et Fabric API sur le serveur. Les joueurs qui utilisent l’éditeur ont besoin du mod côté client.
 
-**Serveur Paper :** installez le plugin compagnon et son agent Java de démarrage sur **Paper 26.2 build 135**. L’éditeur demande un client Fabric équipé du mod ; les joueurs sans mod peuvent rejoindre le serveur. Suivez le [guide Paper](paper/README.md) pour les fichiers et l’argument `-javaagent` nécessaires. Folia n’est pas pris en charge.
+**Serveur Paper :** installez le plugin compagnon et son agent Java de démarrage sur **Paper 26.2 build 135**. L’éditeur demande un client Fabric équipé du mod ; les joueurs sans mod peuvent rejoindre le serveur. Suivez le [guide Paper](paper/README.fr.md) pour les fichiers et l’argument `-javaagent` nécessaires. Folia n’est pas pris en charge.
 
-Consultez le [guide d’installation](docs/INSTALLATION.md) pour les permissions et la configuration. En solo, activez les commandes du monde pour l’accès par défaut.
+Consultez le [guide d’installation](docs/INSTALLATION.fr.md) pour les permissions et la configuration. En solo, activez les commandes du monde pour l’accès par défaut.
 
 ## Premiers pas
 
@@ -46,18 +46,18 @@ Consultez le [guide d’installation](docs/INSTALLATION.md) pour les permissions
 4. Parcourez les pages avec **← / →** et lancez la lecture avec **U**. **R** revient au début de la dernière animation jouée.
 5. Cliquez sur **Terminer** pour quitter l’édition et récupérer votre inventaire. La séquence reste sauvegardée.
 
-Les touches se modifient dans les paramètres. Le [guide complet](docs/USAGE.md) détaille le visionnage, les deux timelines, les commandes et les outils.
+Les touches se modifient dans les paramètres. Le [guide complet](docs/USAGE.fr.md) détaille le visionnage, les deux timelines, les commandes et les outils.
 
 > Faites une sauvegarde du monde avant les essais. La prévisualisation restaure une région du montage ; elle ne rembobine pas les entités ni les effets extérieurs. À plusieurs joueurs, le rejeu est visible et le monde continue de tourner. OFF retire uniquement le signal du mod : la redstone réelle reste active.
 
 ## Documentation
 
-- [Utilisation et commandes](docs/USAGE.md)
-- [Installation et permissions](docs/INSTALLATION.md)
-- [Propriétaires, export, import et migration](docs/OWNERSHIP-EXPORT.md)
-- [Compilation et préparation des distributions](docs/BUILD.md)
-- [Scénarios de test en jeu](docs/TEST-EN-JEU.md)
-- [Architecture et installation Paper](paper/README.md)
+- [Utilisation et commandes](docs/USAGE.fr.md)
+- [Installation et permissions](docs/INSTALLATION.fr.md)
+- [Propriétaires, export, import et migration](docs/OWNERSHIP-EXPORT.fr.md)
+- [Compilation et préparation des distributions](docs/BUILD.fr.md)
+- [Scénarios de test en jeu](docs/TEST-EN-JEU.fr.md)
+- [Architecture et installation Paper](paper/README.fr.md)
 
 ## Compilation
 
@@ -84,4 +84,6 @@ Dans une issue, indiquez les versions de Minecraft, du mod et du serveur, les é
 
 ## Licence
 
-Projet d’**ElitGaimix**, distribué sous [CC0-1.0](LICENSE). Le composant de démarrage Paper inclut ASM, avec sa [notice de licence](paper/agent/THIRD-PARTY-ASM-LICENSE.txt).
+Projet d’**ElitGaimix**, distribué sous [MIT](LICENSE). Le composant de démarrage Paper inclut ASM, avec sa [notice de licence](paper/agent/THIRD-PARTY-ASM-LICENSE.txt).
+
+Voir [l’historique des licences](LICENSING.md) pour la première release CC0 et les notices de tiers.

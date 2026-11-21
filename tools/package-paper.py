@@ -43,15 +43,21 @@ def main():
     contents = {target: source.read_bytes() for target, source in artifacts.items()}
     for source, target in [
         ("paper/README.md", "README-PAPER.md"),
+        ("paper/README.fr.md", "README-PAPER.fr.md"),
         ("paper/VERIFICATION.md", "VERIFICATION.md"),
+        ("paper/VERIFICATION.fr.md", "VERIFICATION.fr.md"),
         ("LICENSE", "LICENSE"),
+        ("LICENSING.md", "LICENSING.md"),
+        ("licenses/CC0-1.0-previous-releases.txt", "licenses/CC0-1.0-previous-releases.txt"),
         ("paper/agent/THIRD-PARTY-ASM-LICENSE.txt", "THIRD-PARTY-ASM-LICENSE.txt"),
     ]:
         contents[target] = (ROOT / source).read_bytes()
-        if target == "README-PAPER.md":
-            contents[target] = contents[target].replace(b"../docs/",b"docs/")
+        if target in {"README-PAPER.md", "README-PAPER.fr.md", "VERIFICATION.md"}:
+            contents[target] = contents[target].replace(b"../docs/",b"docs/").replace(b"(README.fr.md)",b"(README-PAPER.fr.md)").replace(b"(README.md)",b"(README-PAPER.md)").replace(b"(../LICENSE)",b"(LICENSE)").replace(b"(../LICENSING.md)",b"(LICENSING.md)")
+        if target == "LICENSING.md":
+            contents[target] = contents[target].replace(b"paper/agent/THIRD-PARTY-ASM-LICENSE.txt", b"THIRD-PARTY-ASM-LICENSE.txt")
     for source in (ROOT / "docs").glob("*.md"):
-        contents["docs/"+source.name] = source.read_bytes()
+        contents["docs/"+source.name] = source.read_bytes().replace(b"../paper/README.fr.md", b"../README-PAPER.fr.md").replace(b"../paper/README.md", b"../README-PAPER.md").replace(b"../paper/VERIFICATION.fr.md", b"../VERIFICATION.fr.md").replace(b"../paper/VERIFICATION.md", b"../VERIFICATION.md")
     contents["server/start-paper-example.bat"] = (
         "@echo off\r\n"
         "rem Put the official Paper 26.2 build 135 JAR here; it is not distributed in this archive.\r\n"

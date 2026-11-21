@@ -1,60 +1,37 @@
-# Procédure de test en jeu
+# Manual in-game checks
 
-Utiliser un monde sauvegardé, de préférence une copie. Ce guide complète le rapport
-des contrôles déjà réalisés ; il ne prétend pas certifier toutes les constructions.
-Pour Paper, installer les trois nouveaux JAR ensemble et redémarrer complètement.
+[Français](TEST-EN-JEU.fr.md) · [Verification report](../paper/VERIFICATION.md)
 
-## Création et édition
+Use a backed-up world, preferably a disposable copy. These checks do not certify every redstone layout. On Paper, update the client mod, plugin and agent together and fully restart.
 
-1. Créatif, avec `layoutdebugger.use` sur Paper (ou accès Fabric décrit dans INSTALLATION).
-   Un administrateur peut tester OP, mais vérifier aussi un compte non OP avec le
-   seul droit d'utilisation si un gestionnaire de permissions est installé.
-2. Construire un piston collant face à un bloc de pierre, puis `/ld create PorteTest`.
-   K ouvre la bibliothèque ; sélectionner PorteTest, Ouvrir, Capturer.
-3. Page 0 : outil vert sur le piston. Cliquer à nouveau doit retirer l'action.
-   Recliquer pour la remettre. Page 2 : outil rouge. Tester Lecture puis Reset.
-4. Tester la timeline Fermeture, la construction pendant la capture, la visibilité
-   du piston dans le HUD, les touches et les réglages de langue/échelle.
-5. Terminer : l'inventaire initial doit être rendu. Une lecture et un saut de page
-   doivent rester possibles dans Visionner. Sur Paper, `/ld run PorteTest opening`,
-   puis `/ld stop`, lance/arrête une lecture en direct depuis le monde réel.
+## Creation and editing
 
-## Propriétaires
+1. Enter creative mode with `layoutdebugger.use` on Paper, or the Fabric access described in [installation](INSTALLATION.md). Also test a non-OP account granted only the use permission when a permissions manager is available.
+2. Build a sticky piston facing a stone block and create `TestDoor`. Press **K**, select it, open it and capture the layout.
+3. At page 0, use ON on the piston. Repeat the click to remove the action, then add it again. At page 2, use OFF. Test playback and reset.
+4. Check the closing timeline, construction changes during capture, piston HUD, shortcuts, language and UI zoom.
+5. Finish and check inventory restoration. Open viewing mode and check playback/page navigation. On Paper, `/ld run TestDoor opening` and `/ld stop` should start/stop direct playback from the live layout.
 
-1. Rejoindre avec un second compte autorisé : `/ld list` ne doit pas montrer PorteTest.
-2. `/ld create PorteTest` doit créer son propre document, indépendant du premier.
-3. Sur Paper, `/ld select AutreNomPrive` et `/ld run AutreNomPrive opening` doivent
-   refuser un nom qui n'existe que chez l'autre joueur.
-4. Seul un administrateur avec le droit de lecture peut inspecter via
-   `/ld admin owners`, puis `/ld admin show UUID PorteTest`.
-   Donner seulement `admin.view` ne doit pas permettre `admin assign`.
-   Refuser explicitement ces droits sur un compte OP si nécessaire pour ce test,
-   car OP les reçoit par défaut.
+## Ownership
 
-## Export et import
+1. Join with a second authorized account: `/ld list` must not reveal the first player’s `TestDoor`.
+2. `/ld create TestDoor` must create a separate document for the second player.
+3. On Paper, selecting or running an animation name that exists only in another player’s catalog must be rejected.
+4. An administrator with read access can inspect `/ld admin owners` and `/ld admin show <UUID> TestDoor`. Read access alone must not allow assignment. Deny permissions explicitly for this test if the account is OP, since OP receives them by default.
 
-1. Finir la session, K → sélectionner → Exporter. Vérifier le fichier dans
-   `<instance Minecraft>/layout-debugger/exports/` et le message du chat.
-2. Vérifier les deux timelines dans le JSON. Aucune construction ni inventaire
-   ne doit y figurer. `/ld export PorteTest` produit seulement la copie serveur.
-3. `/ld whoami`, puis déposer le fichier dans `imports/UUID/` du dossier de données
-   serveur. Se placer à la position destinée au premier piston et exécuter :
-   `/ld import PorteTest-XXXXXXXX.ldanim.json PorteImportee` (utiliser le vrai nom).
-4. La copie doit apparaître dans son catalogue ; aucun bloc ne doit être placé.
-   Reproduire séparément les blocs et orientations, puis capturer/lire la copie.
-   Tester un autre nom pour éviter de remplacer un document existant.
+## Export and import
 
-## Anciennes animations
+1. Finish the session, select an animation in the library and export it. Check `<game directory>/layout-debugger/exports/` and the chat message.
+2. Inspect both timelines in the JSON. No layout blocks or inventories should be included. `/ld export TestDoor` should write only the server copy.
+3. Run `/ld whoami`, put the file under the server data folder’s `imports/<UUID>/`, stand at the intended first piston and run `/ld import <actual-filename.ldanim.json> ImportedDoor`.
+4. The copy must appear in your catalog without placing blocks. Build the blocks/orientations separately, then capture or play it. An existing destination name must be rejected.
 
-Après sauvegarde, `/ld admin list legacy`, `/ld whoami`, puis
-`/ld admin assign AncienNom UUID`. Vérifier le catalogue du joueur et ses deux
-timelines. Le fichier `sequences.json.before-ownership-v4.bak` doit conserver
-l'ancien document. Un nom déjà présent chez le destinataire doit être refusé.
+## Legacy animations
 
-## Partage et limites
+After backing up, run `/ld admin list legacy`, `/ld whoami` and `/ld admin assign OldName <UUID>`. Check the recipient’s catalog and both timelines. `sequences.json.before-ownership-v4.bak` must preserve the original data. A name conflict must be rejected.
 
-En capture, faire rejoindre un joueur vanilla : la session doit rester ouverte,
-passer en mode partagé et laisser le monde tourner. Les sauts de page deviennent
-visibles et la pause ne bloque plus la physique. Terminer, faire partir l'autre
-joueur et recapturer pour revenir au mode précis. Tester les grands layouts et
-les protections des autres plugins avant de déployer sur un serveur public.
+## Shared capture and limits
+
+On Paper, have a vanilla player join during capture. The session must stay open, enter shared mode and let the world run. Page jumps become visible replay; pause must no longer freeze world physics. Finish, disconnect the other player and recapture to return to precise solo mode.
+
+Test your actual large layouts and other plugins’ protections on a copy before deploying to a public server.

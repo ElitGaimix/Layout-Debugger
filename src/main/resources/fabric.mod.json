@@ -7,7 +7,7 @@
 	"authors": [
 		"ElitGaimix"
 	],
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/layout-debugger/icon.png",
 	"environment": "*",
 	"entrypoints": {

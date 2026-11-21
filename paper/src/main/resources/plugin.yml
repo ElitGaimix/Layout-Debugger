@@ -1,5 +1,5 @@
 name: LayoutDebugger
-version: 0.1.0-dev
+version: 0.1.1
 main: fr.eligaimix.ltdr.paper.LayoutDebuggerPaper
 api-version: '26.2'
 description: Optional client bridge and server-authoritative layout documents.

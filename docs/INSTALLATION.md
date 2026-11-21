@@ -8,7 +8,7 @@ Requirements: **Minecraft 26.2**, **Java 25 or newer**, **Fabric Loader 0.20.1 o
 
 1. Install Fabric Loader for Minecraft 26.2 in your launcher.
 2. Download Fabric API for Minecraft 26.2 separately.
-3. Download `layout-debugger-1.0.0.jar` from the release. Alternatively, extract the client ZIP and take the mod from `client/mods/`.
+3. Download `layout-debugger-1.0.1.jar` from the release. Alternatively, extract the client ZIP and take the mod from `client/mods/`.
 4. Put both the mod and Fabric API JARs in your Minecraft instance’s `mods/` folder.
 5. Start the Fabric profile. In single-player, open a creative world with commands enabled. Back up your world before testing.
 6. Press **K**, create an animation, open it and capture your layout. Program pistons using the **ON / OFF** tools. One timeline page is one redstone tick (two game ticks).
@@ -22,7 +22,7 @@ To edit on a server, install this same client mod and connect to an equipped Fab
 ### Fabric server
 
 1. Set up a Fabric server for **Minecraft 26.2**, with Java 25 or newer.
-2. Install Fabric API for 26.2 and `layout-debugger-1.0.0.jar` in the server’s `mods/` folder. The server Fabric ZIP contains the mod under `serveur-fabric/mods/`.
+2. Install Fabric API for 26.2 and `layout-debugger-1.0.1.jar` in the server’s `mods/` folder. The server Fabric ZIP contains the mod under `serveur-fabric/mods/`.
 3. Restart the server. Players using the editor must follow the client steps above.
 4. Use creative mode and grant the `layout-debugger:use` permission through the Fabric permissions API, or the default gamemaster command level.
 
@@ -31,7 +31,7 @@ To edit on a server, install this same client mod and connect to an equipped Fab
 Supported target: **Paper 26.2 build 135 (commit e4d6dfd)**, Java 25 or newer. Other builds and forks are not validated. **Folia is unsupported.**
 
 1. Extract the Paper server ZIP. Its `serveur-paper/` folder contains the plugin, startup agent and example launch scripts.
-2. Put `layout-debugger-paper-0.1.0-dev.jar` in your server’s `plugins/` folder.
+2. Put `layout-debugger-paper-0.1.1.jar` in your server’s `plugins/` folder.
 3. Put `layout-debugger-agent.jar` in the server root, **outside** `plugins/`.
 4. Download the official Paper server separately. For the example scripts, name its file `paper-26.2-135.jar`.
 5. Add the agent argument before `-jar` in your startup command:
@@ -53,7 +53,7 @@ Players without the mod can still join Paper and play normally; they do not have
 
 Fabric saves animations in `<world>/data/layout-debugger/sequences.json`; Paper uses `plugins/LayoutDebugger/sequences.json`. Inventory recovery files are stored under `<world>/data/layout-debugger/inventory-backups/`. Back up these files with your worlds.
 
-The current distribution is an **alpha**: Fabric mod 1.0.0 and Paper plugin 0.1.0-dev. Java bytecode targets Java 25; previous in-game checks ran under Java 27. See the [verification report (French)](../paper/VERIFICATION.md).
+The current distribution is an **alpha**: Fabric mod 1.0.1 and Paper plugin 0.1.1. Java bytecode targets Java 25; previous in-game checks ran under Java 27. See the [verification report (French)](../paper/VERIFICATION.md).
 
 A solo capture can pause the server and hide accelerated replay. Once another player joins, capture continues in shared mode: replay is visible and the world keeps running until the session ends. Only one editing session is reserved at a time.
 
